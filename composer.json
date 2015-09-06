@@ -1,0 +1,27 @@
+{
+    "name": "rowasc/yii2oauthserver",
+    "description": "A module that implement's TheLeague's OAuth component for Yii2",
+    "type": "yii2-extension",
+    "require": {
+        "league/oauth2-server": "@stable",
+        "yiisoft/yii2": "@stable",
+        "rowasc/yii2loggingutils":"dev-master"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.1",
+        "yiisoft/yii2-codeception": "^2.0",
+        "codeception/aspect-mock": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "rowasc\\yii2oauthserver\\":"src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Romina Suarez",
+            "email": "rowasc@gmail.com"
+        }
+    ]
+}
