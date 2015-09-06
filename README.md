@@ -1,9 +1,8 @@
-Coming soon! 
 
-1. Copy the migration file to your own migrations directory (inside of your yii2 project) , and run the migrations. 
+* Copy the migration file to your own migrations directory (inside of your yii2 project) , and run the migrations. 
 Make sure you update the client_id and client_secret before using it in your project, since they are not safe the way they are added in the migration! 
 
-2. Edit your yii2 configuration to include the following under "components"
+* Edit your yii2 configuration to include the following under "components"
 
 
 ```php
@@ -15,7 +14,7 @@ Make sure you update the client_id and client_secret before using it in your pro
     ],
 ```
 
-3. Edit your yii2 configuration to include the following under "modules"
+* Edit your yii2 configuration to include the following under "modules"
 
 ```php
      'yii2oauthserver' => [
@@ -23,18 +22,18 @@ Make sure you update the client_id and client_secret before using it in your pro
      ]
 ```
 
-4. In your .htaccess file, allow the Authorization headers to pass, since they will be stripped most of the time witouth this line
+* In your .htaccess file, allow the Authorization headers to pass, since they will be stripped most of the time witouth this line
 
 
 ```php
     SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 ```
 
-5. Have your base api controller extend " \rowasc\yii2oauthserver\controllers\ApiController" . 
+* Have your base api controller extend " \rowasc\yii2oauthserver\controllers\ApiController" . 
 
-6. Create an AuthorizationController, and extend \rowasc\yii2oauthserver\controllers\AuthorizationController in it.
+* Create an AuthorizationController, and extend \rowasc\yii2oauthserver\controllers\AuthorizationController in it.
 
-7. In your User model, extend rowasc\yii2oauthserver\models\User
+* In your User model, extend rowasc\yii2oauthserver\models\User
 
 This will create an "/authorization/login" and a "/authorization/logout" endpoint which will allow you to get and expire bearer tokens for your api auth. 
 
