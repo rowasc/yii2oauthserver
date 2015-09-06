@@ -34,6 +34,7 @@ Make sure you update the client_id and client_secret before using it in your pro
 
 6. Create an AuthorizationController, and extend \rowasc\yii2oauthserver\controllers\AuthorizationController in it.
 
+7. In your User model, extend rowasc\yii2oauthserver\models\User
 
 This will create an "/authorization/login" and a "/authorization/logout" endpoint which will allow you to get and expire bearer tokens for your api auth. 
 
