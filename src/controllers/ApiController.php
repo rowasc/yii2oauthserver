@@ -171,4 +171,36 @@ class ApiController extends ActiveController {
         return $return;
     }
 
+    /**
+     * Checks  if the current user has enough privileges to access the API private functionality by User
+     * @param string $action the ID of the action to be executed
+     * @param object $model the model to be accessed. If null, it means no specific model is being accessed.
+     * @param array $params additional parameters
+     * @throws UnauthorizedClientException if the user does not have access
+     * @return boolean
+     */
+    public function checkAuthorizedAccessByUser($action, $model, $params = []) {
+        $return = false;
+        if (!in_array($action, $this->public_actions)) {
+
+            // To check default Yii rest actions
+            if (!isset($params["{$this->id}_id"]) && isset($this->actionParams['id'])) {
+                $params["{$this->id}_id"] = $this->actionParams['id'];
+            }
+            /* @var $user User */
+            $user = Yii::$app->getUser()->getIdentity();
+            if ($user && $user->id === $model->id){
+                $return = true;
+            }
+        } else {
+            // It is not an authenticated method
+            $return = true;
+        }
+
+        if (!$return) {
+            throw new UnauthorizedClientException("You are not authorized to run the action '$action' on this resource");
+        }
+
+        return $return;
+    }
 }
