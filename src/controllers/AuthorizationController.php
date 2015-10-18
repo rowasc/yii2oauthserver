@@ -62,7 +62,6 @@ class AuthorizationController extends ApiController {
         return parent::beforeAction($action);
     }
 
-
     /**
      * @return array
      * @throws InvalidRequestException
@@ -72,8 +71,10 @@ class AuthorizationController extends ApiController {
      * @throws \League\OAuth2\Server\Exception\UnsupportedGrantTypeException
      */
     public function actionLogin() {
-
+        $user=null;
         $passwordGrant = new PasswordGrant();
+        $modelClass=$this->modelClass;
+        $user = $modelClass::findOne(['username' => Yii::$app->request->post("username"), 'status' => $modelClass::STATUS_ACTIVE]);
 
         $passwordGrant->setVerifyCredentialsCallback(function ($username, $password) {
                 /* @var $modelClass User */
@@ -86,7 +87,6 @@ class AuthorizationController extends ApiController {
                     return false;
                 }
             });
-
         $this->server->addGrantType($passwordGrant);
 
         try {
@@ -108,9 +108,12 @@ class AuthorizationController extends ApiController {
 
             throw new OAuthException($e->getMessage());
         }
-
-        return $response;
+	    if (isset($response["access_token"])){
+             $response["user_id"]=$user->getId();
+        }
+	    return $response;
     }
+
 
     public function actionLogout() {
 
