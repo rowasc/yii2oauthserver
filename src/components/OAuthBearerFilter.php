@@ -32,7 +32,7 @@ class OAuthBearerFilter extends AuthMethod {
             }
         } catch (AccessDeniedException $e) {
             $this->handleFailure($response);
-            Yii::error(Yii::t('api', 'Access Denied: authorization error'), 'api');
+            Yii::error(Yii::t('rowasc.oauth', 'Access Denied: authorization error'), 'api');
         } catch (\Exception $s) {
             throw new ServerErrorHttpException($s->getMessage(), 500);
         }
@@ -44,7 +44,7 @@ class OAuthBearerFilter extends AuthMethod {
      * @inheritdoc
      */
     public function handleFailure($response) {
-        throw new OAuthException(Yii::t('api', 'Authorization Error.'));
+        throw new OAuthException(Yii::t('rowasc.oauth', 'Access Denied: authorization error.'));
     }
 
     /**

@@ -131,7 +131,7 @@ class ApiController extends ActiveController {
         }
 
         if (!$return) {
-            throw new UnauthorizedClientException("You are not authorized to run the action '$action' on this resource");
+            throw new UnauthorizedClientException(Yii::t("rowasc.oauth","You are not authorized to run the action '{actionName}' on this resource", ['actionName'=>$action]));
         }
 
         return $return;
@@ -165,7 +165,7 @@ class ApiController extends ActiveController {
         }
 
         if (!$return) {
-            throw new UnauthorizedClientException(Yii::t('api', "You are not authorized to access the API"));
+            throw new UnauthorizedClientException(Yii::t('rowasc.oauth', "You are not authorized to access the API"));
         }
 
         return $return;
@@ -198,7 +198,7 @@ class ApiController extends ActiveController {
         }
 
         if (!$return) {
-            throw new UnauthorizedClientException("You are not authorized to run the action '$action' on this resource");
+            throw new UnauthorizedClientException(Yii::t('rowasc.oauth',"You are not authorized to run the action '{actionName}' on this resource",['actionName'=>$action]));
         }
 
         return $return;

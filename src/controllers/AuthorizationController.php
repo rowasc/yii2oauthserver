@@ -56,12 +56,11 @@ class AuthorizationController extends ApiController {
         if (isset($this->serverComponent)) {
             $this->server = $this->serverComponent->server;
         } else {
-            throw new OAuthException(Yii::t('app', "Authentication Server Error"));
+            throw new OAuthException(Yii::t('rowasc.oauth', "Authentication Server Error"));
         }
 
         return parent::beforeAction($action);
     }
-
 
     /**
      * @return array
@@ -72,8 +71,10 @@ class AuthorizationController extends ApiController {
      * @throws \League\OAuth2\Server\Exception\UnsupportedGrantTypeException
      */
     public function actionLogin() {
-
+        $user=null;
         $passwordGrant = new PasswordGrant();
+        $modelClass=$this->modelClass;
+        $user = $modelClass::findOne(['username' => Yii::$app->request->post("username"), 'status' => $modelClass::STATUS_ACTIVE]);
 
         $passwordGrant->setVerifyCredentialsCallback(function ($username, $password) {
                 /* @var $modelClass User */
@@ -86,7 +87,6 @@ class AuthorizationController extends ApiController {
                     return false;
                 }
             });
-
         $this->server->addGrantType($passwordGrant);
 
         try {
@@ -94,23 +94,26 @@ class AuthorizationController extends ApiController {
 
         } catch (InvalidCredentialsException $e) {
 
-            throw new InvalidCredentialsException($e->getMessage());
+            throw new InvalidCredentialsException(Yii::t("rowasc.oauth",$e->getMessage()));
 
         } catch (InvalidClientException $e) {
 
-            throw  new InvalidClientException($e->getMessage());
+            throw  new InvalidClientException(Yii::t("rowasc.oauth",$e->getMessage()));
 
         } catch (InvalidRequestException $e) {
 
-            throw new  InvalidRequestException($e->getMessage());
+            throw new  InvalidRequestException(Yii::t("rowasc.oauth",$e->getMessage()));
 
         } catch (UnsupportedGrantTypeException $e) {
 
-            throw new OAuthException($e->getMessage());
+            throw new OAuthException(Yii::t("rowasc.oauth",$e->getMessage()));
         }
-
-        return $response;
+	    if (isset($response["access_token"])){
+             $response["user_id"]=$user->getId();
+        }
+	    return $response;
     }
+
 
     public function actionLogout() {
 
@@ -135,7 +138,7 @@ class AuthorizationController extends ApiController {
                 $tokenEntity->expire();
             }
         } catch (\Exception $e) {
-            $this->_logError(Yii::t('app', "Error while logging out user: $email"));
+            $this->_logError(Yii::t('rowasc.oauth', "Error while logging out user: {email}",['email'=>$email]));
             $this->_logTrace($e);
             $return = ['status' => false];
         }
